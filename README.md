@@ -18,13 +18,13 @@ A WordPress plugin that enables seamless video uploads through the media library
 ## Installation
 
 1. **Upload the plugin files:**
-   - Create a folder named `seamless-video-uploader` in `/wp-content/plugins/`
-   - Upload all plugin files to this folder
+    - Create a folder named `seamless-video-uploader` in `/wp-content/plugins/`
+    - Upload all plugin files to this folder
 
 2. **Activate the plugin:**
-   - Go to WordPress Admin → Plugins
-   - Find "Seamless Video Uploader" in the list
-   - Click "Activate"
+    - Go to WordPress Admin → Plugins
+    - Find "Seamless Video Uploader" in the list
+    - Click "Activate"
 
 3. **That's it!** The plugin works immediately.
 
@@ -97,7 +97,7 @@ Edit `/js/frontend.js` to modify:
 
 ### Adjust Default Attributes
 
-In `video-autoplay-enhancer.php`, modify the `generate_video_html()` function to change default video attributes like:
+In `seamless-video-uploader.php`, modify the `generate_video_html()` function to change default video attributes like:
 - `autoplay`
 - `muted`
 - `loop`
@@ -137,9 +137,9 @@ The plugin includes several optimizations:
 
 ### File upload fails
 - Check your server's upload size limits in `php.ini`:
-  - `upload_max_filesize`
-  - `post_max_size`
-  - `max_execution_time`
+    - `upload_max_filesize`
+    - `post_max_size`
+    - `max_execution_time`
 
 ## Developer Hooks
 

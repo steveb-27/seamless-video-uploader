@@ -4,38 +4,38 @@
 
 (function($) {
     'use strict';
-    
+
     $(document).ready(function() {
-        
+
         /**
          * Enhance media uploader for videos
          */
         if (typeof wp !== 'undefined' && wp.media) {
-            
+
             // Store original media editor
             const originalEditor = wp.media.editor;
-            
+
             // Override media editor send attachment
             wp.media.editor.send = {
                 attachment: function(props, attachment) {
-                    
+
                     // Check if it's a video
                     if (attachment.type === 'video') {
-                        
+
                         // Create custom video HTML
                         const videoHtml = createVideoHtml(attachment);
-                        
+
                         // Insert into editor
                         wp.media.editor.insert(videoHtml);
-                        
+
                         return false;
                     }
-                    
+
                     // For non-videos, use default behavior
                     return originalEditor.send.attachment.apply(this, arguments);
                 }
             };
-            
+
             /**
              * Create video HTML for insertion
              */
@@ -44,7 +44,7 @@
                 const id = attachment.id;
                 const poster = attachment.image && attachment.image.src ? attachment.image.src : '';
                 const posterAttr = poster ? `poster="${poster}"` : '';
-                
+
                 return `<div class="sb27-video-container" data-video-id="${id}">
     <video ${posterAttr} controls muted autoplay loop playsinline controlslist="nodownload">
         <source src="${url}" type="${attachment.mime}">
@@ -57,17 +57,17 @@
     </button>
 </div>`;
             }
-            
+
             /**
              * Add video icon/indicator in media library
              */
             wp.media.view.Attachment.Library = wp.media.view.Attachment.Library.extend({
                 render: function() {
                     wp.media.view.Attachment.prototype.render.apply(this, arguments);
-                    
+
                     if (this.model.get('type') === 'video') {
                         this.$el.addClass('sb27-video-item');
-                        
+
                         // Add play icon overlay
                         if (!this.$el.find('.sb27-play-icon').length) {
                             this.$el.find('.thumbnail').append(
@@ -75,11 +75,11 @@
                             );
                         }
                     }
-                    
+
                     return this;
                 }
             });
-            
+
             // Add CSS for video items in media library
             $('<style>')
                 .text(`
@@ -103,29 +103,29 @@
                 `)
                 .appendTo('head');
         }
-        
+
         /**
          * Handle WooCommerce product gallery
          */
         if ($('#woocommerce-product-images').length) {
-            
+
             // Allow videos in product gallery
             $('#woocommerce-product-images').on('click', '.add_product_images', function() {
-                
+
                 // Wait for media modal to open
                 setTimeout(function() {
-                    
+
                     // Add filter to show videos
                     if (wp.media && wp.media.frame) {
                         const frame = wp.media.frame;
-                        
+
                         if (frame.content && frame.content.get()) {
                             const library = frame.content.get().collection;
-                            
+
                             if (library && library.props) {
                                 // Include videos in the query
                                 const originalType = library.props.get('type');
-                                
+
                                 if (originalType === 'image') {
                                     library.props.set('type', ['image', 'video']);
                                 }
@@ -135,7 +135,7 @@
                 }, 100);
             });
         }
-        
+
         /**
          * Add helpful notice about video support
          */
@@ -144,32 +144,32 @@
                 .html('<p><strong>Seamless Video Uploader:</strong> You can now upload videos (MP4, WebM, etc.) and they will automatically play muted with fullscreen controls when inserted.</p>')
                 .hide()
                 .fadeIn();
-            
+
             $('.wrap h1').first().after(notice);
-            
+
             // Make dismissible
             notice.on('click', '.notice-dismiss', function() {
                 notice.fadeOut();
             });
-            
+
             // Auto-hide after 10 seconds
             setTimeout(function() {
                 notice.fadeOut();
             }, 10000);
         }
-        
+
         /**
          * Video preview in media modal
          */
         $(document).on('DOMNodeInserted', function(e) {
             if ($(e.target).hasClass('attachment-details') || $(e.target).find('.attachment-details').length) {
-                
+
                 const detailsView = $(e.target).hasClass('attachment-details') ? $(e.target) : $(e.target).find('.attachment-details');
-                
+
                 // Check if it's a video
                 const thumbnail = detailsView.find('.thumbnail');
                 const videoElement = thumbnail.find('video');
-                
+
                 if (videoElement.length) {
                     // Add our custom controls to preview
                     videoElement.attr({
@@ -178,7 +178,7 @@
                         'autoplay': 'autoplay',
                         'loop': 'loop'
                     });
-                    
+
                     // Try to play
                     videoElement[0].play().catch(function(error) {
                         console.log('Preview autoplay prevented:', error);
@@ -187,5 +187,5 @@
             }
         });
     });
-    
+
 })(jQuery);

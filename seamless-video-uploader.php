@@ -15,40 +15,41 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Video_Autoplay_Enhancer {
-    
+class Seamless_Video_Uploader {
+
     private static $instance = null;
-    
+
     public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
+
         }
         return self::$instance;
     }
-    
+
     private function __construct() {
         // Add video MIME types to allowed uploads
         add_filter('upload_mimes', array($this, 'add_video_mime_types'));
-        
+
         // Modify video insertion in editor
         add_filter('media_send_to_editor', array($this, 'insert_video_html'), 10, 3);
-        
+
         // Add custom video player HTML for galleries and media
         add_filter('wp_get_attachment_image', array($this, 'replace_video_thumbnail'), 10, 5);
-        
+
         // Enqueue admin scripts
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
-        
+
         // Enqueue frontend scripts and styles
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
-        
+
         // WooCommerce integration
         add_filter('woocommerce_single_product_image_thumbnail_html', array($this, 'woocommerce_video_thumbnail'), 10, 2);
-        
+
         // Handle video attachments in content
         add_filter('the_content', array($this, 'enhance_video_content'), 20);
     }
-    
+
     /**
      * Add video MIME types to WordPress upload
      */
@@ -64,27 +65,27 @@ class Video_Autoplay_Enhancer {
         $mimes['webm'] = 'video/webm';
         return $mimes;
     }
-    
+
     /**
      * Insert custom video HTML when adding to editor
      */
     public function insert_video_html($html, $id, $attachment) {
         $post = get_post($id);
-        
+
         if (strpos($post->post_mime_type, 'video/') === 0) {
             $url = wp_get_attachment_url($id);
             $html = $this->generate_video_html($url, $id);
         }
-        
+
         return $html;
     }
-    
+
     /**
      * Generate video player HTML
      */
     private function generate_video_html($url, $id = 0, $class = '') {
         $poster = '';
-        
+
         // Try to get video thumbnail if available
         if ($id) {
             $thumb_id = get_post_thumbnail_id($id);
@@ -92,10 +93,10 @@ class Video_Autoplay_Enhancer {
                 $poster = wp_get_attachment_url($thumb_id);
             }
         }
-        
+
         $poster_attr = $poster ? 'poster="' . esc_url($poster) . '"' : '';
         $class_attr = $class ? 'class="' . esc_attr($class) . '"' : '';
-        
+
         $html = sprintf(
             '<div class="sb27-video-container" data-video-id="%d">
                 <video %s %s controls muted autoplay loop playsinline controlslist="nodownload">
@@ -113,39 +114,39 @@ class Video_Autoplay_Enhancer {
             $poster_attr,
             esc_url($url)
         );
-        
+
         return $html;
     }
-    
+
     /**
      * Replace video thumbnails with actual video players
      */
     public function replace_video_thumbnail($html, $attachment_id, $size, $icon, $attr) {
         $post = get_post($attachment_id);
-        
+
         if ($post && strpos($post->post_mime_type, 'video/') === 0) {
             $url = wp_get_attachment_url($attachment_id);
             $class = isset($attr['class']) ? $attr['class'] : '';
             return $this->generate_video_html($url, $attachment_id, $class);
         }
-        
+
         return $html;
     }
-    
+
     /**
      * WooCommerce product gallery video support
      */
     public function woocommerce_video_thumbnail($html, $attachment_id) {
         $post = get_post($attachment_id);
-        
+
         if ($post && strpos($post->post_mime_type, 'video/') === 0) {
             $url = wp_get_attachment_url($attachment_id);
             return $this->generate_video_html($url, $attachment_id, 'woocommerce-product-gallery__image');
         }
-        
+
         return $html;
     }
-    
+
     /**
      * Enhance video content in posts/pages
      */
@@ -172,10 +173,10 @@ class Video_Autoplay_Enhancer {
                 $content
             );
         }
-        
+
         return $content;
     }
-    
+
     /**
      * Enqueue admin scripts
      */
@@ -190,7 +191,7 @@ class Video_Autoplay_Enhancer {
             );
         }
     }
-    
+
     /**
      * Enqueue frontend scripts and styles
      */
@@ -201,7 +202,7 @@ class Video_Autoplay_Enhancer {
             array(),
             '1.0.0'
         );
-        
+
         wp_enqueue_script(
             'sb27-frontend',
             plugin_dir_url(__FILE__) . 'js/frontend.js',
@@ -213,7 +214,7 @@ class Video_Autoplay_Enhancer {
 }
 
 // Initialize the plugin
-function video_autoplay_enhancer_init() {
-    return Video_Autoplay_Enhancer::get_instance();
+function seamless_video_uploader_init() {
+    return Seamless_Video_Uploader::get_instance();
 }
-add_action('plugins_loaded', 'video_autoplay_enhancer_init');
+add_action('plugins_loaded', 'seamless_video_uploader_init');

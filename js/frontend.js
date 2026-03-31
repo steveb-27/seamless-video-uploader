@@ -4,9 +4,9 @@
 
 (function($) {
     'use strict';
-    
+
     $(document).ready(function() {
-        
+
         /**
          * Initialize video players
          */
@@ -15,12 +15,12 @@
                 const container = $(this);
                 const video = container.find('video')[0];
                 const fullscreenBtn = container.find('.sb27-fullscreen-btn');
-                
+
                 if (!video) return;
-                
+
                 // Ensure video autoplays (some browsers block this)
                 const playPromise = video.play();
-                
+
                 if (playPromise !== undefined) {
                     playPromise.catch(function(error) {
                         // Auto-play was prevented
@@ -28,26 +28,26 @@
                         // Video will still be playable with user interaction
                     });
                 }
-                
+
                 // Fullscreen button click handler
                 fullscreenBtn.on('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     toggleFullscreen(container[0]);
                 });
-                
+
                 // Add keyboard support for fullscreen
                 container.on('keydown', function(e) {
                     if (e.key === 'f' || e.key === 'F') {
                         toggleFullscreen(container[0]);
                     }
                 });
-                
+
                 // Update button visibility on fullscreen change
                 $(document).on('fullscreenchange webkitfullscreenchange mozfullscreenchange', function() {
                     updateFullscreenButton(container);
                 });
-                
+
                 // Intersection Observer for performance (pause when not visible)
                 if ('IntersectionObserver' in window) {
                     const observer = new IntersectionObserver(function(entries) {
@@ -61,17 +61,17 @@
                     }, {
                         threshold: 0.5
                     });
-                    
+
                     observer.observe(video);
                 }
             });
         }
-        
+
         /**
          * Toggle fullscreen mode
          */
         function toggleFullscreen(element) {
-            if (!document.fullscreenElement && !document.webkitFullscreenElement && 
+            if (!document.fullscreenElement && !document.webkitFullscreenElement &&
                 !document.mozFullScreenElement && !document.msFullscreenElement) {
                 // Enter fullscreen
                 if (element.requestFullscreen) {
@@ -96,18 +96,18 @@
                 }
             }
         }
-        
+
         /**
          * Update fullscreen button appearance
          */
         function updateFullscreenButton(container) {
             const isFullscreen = document.fullscreenElement === container[0] ||
-                                document.webkitFullscreenElement === container[0] ||
-                                document.mozFullScreenElement === container[0] ||
-                                document.msFullscreenElement === container[0];
-            
+                document.webkitFullscreenElement === container[0] ||
+                document.mozFullScreenElement === container[0] ||
+                document.msFullscreenElement === container[0];
+
             const btn = container.find('.sb27-fullscreen-btn');
-            
+
             if (isFullscreen) {
                 btn.attr('aria-label', 'Exit Fullscreen');
                 btn.find('svg').html('<path d="M2 8h4v4h2V6H2v2zm10-6h-2v6h6V6h-4V2zM8 16H2v-2h4v-4h2v6zm8 0h-6v-6h2v4h4v2z"/>');
@@ -116,7 +116,7 @@
                 btn.find('svg').html('<path d="M2 2h6v2H4v4H2V2zm14 0h-6v2h4v4h2V2zM2 18h6v-2H4v-4H2v6zm16 0h-6v-2h4v-4h2v6z"/>');
             }
         }
-        
+
         /**
          * Handle WooCommerce product gallery
          */
@@ -124,7 +124,7 @@
             if (typeof wc_single_product_params === 'undefined') {
                 return;
             }
-            
+
             // Handle video in product gallery
             $('.woocommerce-product-gallery').on('click', '.sb27-video-container', function(e) {
                 // Prevent opening in lightbox/photoswipe
@@ -137,7 +137,7 @@
                     }
                 }
             });
-            
+
             // Pause videos when lightbox opens on other images
             $('.woocommerce-product-gallery').on('click', 'a:not(.sb27-video-container a)', function() {
                 $('.woocommerce-product-gallery video').each(function() {
@@ -145,29 +145,29 @@
                 });
             });
         }
-        
+
         /**
          * Handle video muting toggle
          */
         $(document).on('click', '.sb27-video-container video', function(e) {
             const video = this;
-            
+
             // Toggle mute on video click (not fullscreen button)
             if (!$(e.target).closest('.sb27-fullscreen-btn').length) {
                 video.muted = !video.muted;
-                
+
                 // Show mute indicator
                 showMuteIndicator($(video).parent(), video.muted);
             }
         });
-        
+
         /**
          * Show mute/unmute indicator
          */
         function showMuteIndicator(container, isMuted) {
-            const indicator = $('<div class="sb27-mute-indicator">' + 
-                              (isMuted ? '🔇' : '🔊') + '</div>');
-            
+            const indicator = $('<div class="sb27-mute-indicator">' +
+                (isMuted ? '🔇' : '🔊') + '</div>');
+
             indicator.css({
                 position: 'absolute',
                 top: '50%',
@@ -181,31 +181,31 @@
                 zIndex: '100',
                 pointerEvents: 'none'
             });
-            
+
             container.append(indicator);
-            
+
             setTimeout(function() {
                 indicator.fadeOut(300, function() {
                     indicator.remove();
                 });
             }, 1000);
         }
-        
+
         // Initialize on page load
         initVideoPlayers();
         initWooCommerceGallery();
-        
+
         // Re-initialize for dynamically added content
         $(document).on('DOMNodeInserted', function(e) {
             if ($(e.target).find('.sb27-video-container').length || $(e.target).hasClass('sb27-video-container')) {
                 setTimeout(initVideoPlayers, 100);
             }
         });
-        
+
         // Handle AJAX loaded content (WooCommerce, etc.)
         $(document.body).on('updated_wc_div', function() {
             setTimeout(initVideoPlayers, 100);
         });
     });
-    
+
 })(jQuery);
