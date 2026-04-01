@@ -1,0 +1,77 @@
+/* Seamless Video Uploader - Admin Styles */
+
+/* -----------------------------------------------------------------------
+   Review notice
+------------------------------------------------------------------------ */
+
+.svu-review-notice {
+    border-left-color: #2271b1;
+    padding: 12px 16px;
+}
+
+.svu-review-notice__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.svu-review-notice__icon {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.svu-review-notice__content p {
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.svu-review-notice__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px !important;
+}
+
+.svu-review-notice__actions .button {
+    font-size: 13px;
+}
+
+.svu-review-later {
+    color: #787c82;
+    font-size: 13px;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.svu-review-later:hover {
+    color: #2271b1;
+    text-decoration: underline;
+}
+
+/* -----------------------------------------------------------------------
+   Media library — video item indicator
+------------------------------------------------------------------------ */
+
+.sb27-video-item {
+    border: 2px solid #2271b1;
+}
+
+.sb27-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.attachment.sb27-video-item .thumbnail:hover .sb27-play-icon {
+    color: #2271b1;
+}
