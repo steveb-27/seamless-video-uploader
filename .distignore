@@ -1,0 +1,6 @@
+.github/
+.git/
+.idea/
+.gitignore
+.DS_Store
+README.md

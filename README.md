@@ -1,204 +1,164 @@
-# Seamless Video Uploader - WordPress Plugin
+# Seamless Video Uploader
 
-A WordPress plugin that enables seamless video uploads through the media library with automatic autoplay, muting, and fullscreen controls. Works with pages, posts, and WooCommerce product galleries.
+A WordPress plugin that automatically applies autoplay, mute, loop, and a fullscreen toggle whenever a video is inserted from the media library — with no per-video configuration required. Also adds video support to WooCommerce product galleries.
 
-## Features
+**WordPress.org listing:** _coming soon_
+**Author:** [Steve B-27](https://steveb27.com)
 
-- ✅ Upload videos through the standard WordPress media uploader
-- ✅ Automatic video insertion with autoplay (muted)
-- ✅ Built-in fullscreen toggle button
-- ✅ Works with pages, posts, and custom post types
-- ✅ Full WooCommerce product gallery integration
-- ✅ Support for multiple video formats (MP4, WebM, MOV, AVI, etc.)
-- ✅ Responsive and mobile-friendly
-- ✅ Automatic pause when video is out of viewport (performance optimization)
-- ✅ Click video to toggle mute/unmute
-- ✅ Keyboard support (press 'F' for fullscreen)
+---
 
-## Installation
+## How this differs from WordPress core
 
-1. **Upload the plugin files:**
-    - Create a folder named `seamless-video-uploader` in `/wp-content/plugins/`
-    - Upload all plugin files to this folder
+WordPress 6.0+ already supports autoplay, muted, loop, and playsinline in the Gutenberg **Video block** — so it's worth being clear about where this plugin adds value:
 
-2. **Activate the plugin:**
-    - Go to WordPress Admin → Plugins
-    - Find "Seamless Video Uploader" in the list
-    - Click "Activate"
+| Scenario | Core WordPress | This plugin |
+|---|---|---|
+| Gutenberg Video block — autoplay/muted/loop | ✅ Manual toggle per block | ✅ Applied automatically |
+| Classic editor / media library "Insert into post" | ❌ No autoplay support | ✅ Automatic |
+| Viewport-aware pause (Intersection Observer) | ❌ | ✅ |
+| WooCommerce product gallery video support | ❌ | ✅ |
+| Media & Text block autoplay | ❌ No UI controls | ✅ Via `enhance_video_content` filter |
+| Expanded upload MIME types (MOV, AVI, WMV…) | ❌ Restricted by default | ✅ |
+| Custom fullscreen overlay button + F shortcut | ❌ | ✅ |
 
-3. **That's it!** The plugin works immediately.
+The primary audience is users who want zero-configuration video behaviour — upload, insert, done — especially in WooCommerce stores and classic editor sites.
 
-## File Structure
+---
+
+## File structure
 
 ```
 seamless-video-uploader/
-├── seamless-video-uploader.php    (Main plugin file)
+├── seamless-video-uploader.php   Main plugin file, all PHP logic
+├── readme.txt                    WordPress.org directory listing
 ├── css/
-│   └── frontend.css               (Frontend styles)
+│   ├── frontend.css              Public-facing video player styles
+│   └── admin.css                 Admin notice styles
 ├── js/
-│   ├── frontend.js                (Frontend JavaScript)
-│   └── admin.js                   (Admin/media uploader JavaScript)
-└── README.md                      (This file)
+│   ├── frontend.js               Intersection Observer, fullscreen, mute toggle
+│   └── admin.js                  Media library enhancements
+└── .wordpress-org/               Banner, icon, and screenshot assets (SVN only)
 ```
 
-## Usage
+---
 
-### Inserting Videos in Pages/Posts
-
-1. Create or edit a page/post
-2. Click "Add Media" button
-3. Upload your video file (or select existing video)
-4. Click "Insert into post"
-5. The video will automatically be inserted with autoplay controls
-
-### Using Videos in WooCommerce Product Galleries
-
-1. Edit a product
-2. In the "Product Gallery" section, click "Add product gallery images"
-3. Upload or select your video
-4. The video will appear in the gallery alongside images
-5. Videos will autoplay when visible in the gallery
-
-### Video Controls
-
-- **Autoplay**: Videos start playing automatically when visible (muted)
-- **Fullscreen**: Click the fullscreen button (⛶) in bottom-right corner
-- **Mute/Unmute**: Click anywhere on the video to toggle sound
-- **Standard Controls**: Pause, play, volume, and timeline controls are available
-
-### Supported Video Formats
-
-- MP4 (`.mp4`)
-- WebM (`.webm`)
-- MOV (`.mov`)
-- M4V (`.m4v`)
-- AVI (`.avi`)
-- WMV (`.wmv`)
-- MPEG (`.mpg`, `.mpeg`)
-- OGV (`.ogv`)
-
-## Customization
-
-### Modify Video Appearance
-
-Edit `/css/frontend.css` to change:
-- Video container styles
-- Fullscreen button appearance
-- Aspect ratios
-- Responsive breakpoints
-
-### Change Video Behavior
-
-Edit `/js/frontend.js` to modify:
-- Autoplay settings
-- Intersection Observer thresholds
-- Keyboard shortcuts
-- Mute/unmute behavior
-
-### Adjust Default Attributes
-
-In `seamless-video-uploader.php`, modify the `generate_video_html()` function to change default video attributes like:
-- `autoplay`
-- `muted`
-- `loop`
-- `playsinline`
-- `controlslist`
-
-## Performance Optimization
-
-The plugin includes several optimizations:
-
-1. **Lazy Loading**: Videos only play when visible in viewport
-2. **Automatic Pause**: Videos pause when scrolled out of view
-3. **Efficient DOM Handling**: Uses event delegation and observers
-4. **Minimal Resources**: Lightweight CSS and JavaScript
-
-## Browser Compatibility
-
-- Chrome/Edge: Full support
-- Firefox: Full support
-- Safari: Full support (iOS requires `playsinline` attribute)
-- Mobile browsers: Full support with touch controls
-
-## Troubleshooting
-
-### Videos won't autoplay
-- Some browsers block autoplay with sound. The plugin mutes videos by default to allow autoplay.
-- Check browser console for any error messages.
-
-### Fullscreen not working
-- Ensure your browser allows fullscreen API.
-- Try using keyboard shortcut 'F' instead of clicking button.
-
-### Videos not appearing in WooCommerce gallery
-- Verify WooCommerce is installed and activated.
-- Clear browser cache and WooCommerce cache.
-- Check that video format is supported.
-
-### File upload fails
-- Check your server's upload size limits in `php.ini`:
-    - `upload_max_filesize`
-    - `post_max_size`
-    - `max_execution_time`
-
-## Developer Hooks
+## Developer hooks
 
 ### Filters
 
 ```php
-// Modify video HTML output
-add_filter('sb27_video_html', 'custom_video_html', 10, 3);
-function custom_video_html($html, $url, $id) {
-    // Your custom HTML
+// Modify the generated video HTML
+add_filter( 'sb27_video_html', function( $html, $url, $id ) {
+    // return modified $html
     return $html;
-}
+}, 10, 3 );
 
-// Modify allowed video MIME types
-add_filter('sb27_video_mimes', 'custom_video_mimes');
-function custom_video_mimes($mimes) {
+// Add or remove allowed video MIME types
+add_filter( 'sb27_video_mimes', function( $mimes ) {
     $mimes['mkv'] = 'video/x-matroska';
     return $mimes;
-}
+} );
 ```
 
 ### Actions
 
 ```php
-// Run code when plugin initializes
-add_action('sb27_init', 'my_custom_function');
-function my_custom_function() {
-    // Your code here
-}
+// Runs after the plugin initialises
+add_action( 'sb27_init', function() {
+    // your code
+} );
 ```
 
-## Requirements
+---
 
-- WordPress 5.0 or higher
-- PHP 7.2 or higher
-- jQuery (included with WordPress)
+## Releases
 
-## License
+Releases are deployed automatically to WordPress.org SVN via GitHub Actions when a new release is published. The release tag must match the `Version` in `seamless-video-uploader.php` and the `Stable tag` in `readme.txt`.
 
-GPL v2 or later
+**Release checklist:**
+- [ ] Bump `Version` in plugin header (`seamless-video-uploader.php`)
+- [ ] Bump `Stable tag` in `readme.txt`
+- [ ] Update `Changelog` section in `readme.txt`
+- [ ] Add secrets to GitHub repo if not already set: `SVN_USERNAME`, `SVN_PASSWORD`
+- [ ] Publish GitHub Release with a tag matching the version (e.g. `1.0.2`)
 
-## Support
+---
 
-For issues, questions, or feature requests, please:
-1. Check the troubleshooting section above
-2. Review your browser console for errors
-3. Verify all files are properly uploaded
+## Pre-launch checklist
 
-## Changelog
+### WordPress.org assets needed
 
-### Version 1.0.0
-- Initial release
-- Video upload support
-- Autoplay with mute
-- Fullscreen controls
-- WooCommerce integration
-- Responsive design
-- Performance optimizations
+The `.wordpress-org/` folder is deployed to the SVN `/assets/` directory (banners, icons, screenshots). Create these before submitting:
 
-## Credits
+**Plugin icon** (displayed in the WP admin plugins list):
+- [ ] `icon-128x128.png` — 128×128px
+- [ ] `icon-256x256.png` — 256×256px (retina)
 
-Developed for seamless video integration in WordPress and WooCommerce.
+**Plugin banner** (displayed at the top of the WordPress.org listing page):
+- [ ] `banner-772x250.png` — standard
+- [ ] `banner-1544x500.png` — retina / high-DPI
+
+**Screenshots** (must match the numbered descriptions in `readme.txt`):
+- [ ] `screenshot-1.png` — The media library with a video selected, showing the play-icon overlay that the plugin adds to video thumbnails
+- [ ] `screenshot-2.png` — A video inserted on a page in the editor, showing the rendered player with the fullscreen button visible in the corner
+- [ ] `screenshot-3.png` — A WooCommerce product edit screen, with a video visible in the Product Gallery panel alongside images
+
+Screenshots must be PNG or JPG, max 1200px wide. Capture at a clean zoom level (100%) with no browser chrome or OS UI visible.
+
+### Functional testing
+
+**Core insertion:**
+- [ ] Upload an MP4 via Add Media → confirm it inserts with autoplay + muted + loop
+- [ ] Upload a MOV/WebM file → confirm MIME type is accepted and inserts correctly
+- [ ] Insert same video twice on one page → confirm both players work independently
+
+**Autoplay / viewport behaviour:**
+- [ ] Load a page with a video below the fold → confirm it does not play until scrolled into view
+- [ ] Scroll video out of view → confirm it pauses
+- [ ] Scroll back into view → confirm it resumes
+
+**Fullscreen:**
+- [ ] Click the fullscreen overlay button → confirm it enters fullscreen
+- [ ] Press `F` key while video is focused → confirm keyboard shortcut works
+- [ ] Press `Escape` → confirm fullscreen exits cleanly
+
+**Mute toggle:**
+- [ ] Click the video → confirm it unmutes
+- [ ] Click again → confirm it mutes
+
+**WooCommerce:**
+- [ ] Add a video to a product gallery alongside images → confirm it renders correctly
+- [ ] View product page → confirm video autoplays when visible
+
+**Review notice:**
+- [ ] Temporarily set `svu_activation_time` option to 8 days ago in the database
+- [ ] Load the WP dashboard → confirm the notice appears only there, not on other admin screens
+- [ ] Click "I already did!" → confirm it dismisses and does not reappear
+- [ ] Repeat and click "Maybe later" → confirm it reappears after 7 more days
+- [ ] Confirm the notice respects the `DISABLE_NAG_NOTICES` constant
+
+**Compatibility:**
+- [ ] Test with Gutenberg (block editor)
+- [ ] Test with Classic Editor plugin active
+- [ ] Test with WooCommerce active and inactive
+- [ ] Test on Chrome, Firefox, Safari, and mobile Safari (iOS requires `playsinline`)
+
+### Plugin Check tool
+
+- [ ] Install the [Plugin Check plugin](https://wordpress.org/plugins/plugin-check/) on a test site
+- [ ] Run it against Seamless Video Uploader and resolve any errors or warnings before submitting
+
+### WordPress.org submission
+
+- [ ] Create a free account at [wordpress.org](https://wordpress.org) if not already done (username: `steveb27`)
+- [ ] Submit via [wordpress.org/plugins/developers/add/](https://wordpress.org/plugins/developers/add/)
+- [ ] Wait for manual review (typically 1–10 business days)
+- [ ] Once approved, set up `SVN_USERNAME` and `SVN_PASSWORD` secrets in this GitHub repo
+- [ ] Make first release to push code to SVN
+
+### Marketing
+
+- [ ] Write a short launch post or tweet linking to the WordPress.org listing
+- [ ] Add the plugin to your site at [steveb27.com](https://steveb27.com) — this is already set as the Plugin URI and Author URI
+- [ ] Consider posting in [/r/Wordpress](https://reddit.com/r/Wordpress) and the [WordPress.org support forums](https://wordpress.org/support/) once listed
+- [ ] Respond promptly to early support threads — review scores and response rate are visible on the listing and affect discoverability

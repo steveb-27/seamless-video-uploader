@@ -1,0 +1,53 @@
+name: Deploy to WordPress.org
+
+# Triggers when you publish a GitHub Release (e.g. tag v1.0.2).
+# The tag name is used as the SVN tag on WordPress.org, so it must
+# match the Version in seamless-video-uploader.php and readme.txt.
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    name: Push to WordPress.org SVN
+    runs-on: ubuntu-latest
+
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Check out the full repo at the release tag
+      # -----------------------------------------------------------------------
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 2. Deploy to WordPress.org
+      #
+      #    Uses the industry-standard 10up deploy action.
+      #    It reads .distignore to exclude dev-only files, then:
+      #      - syncs trunk/ with the plugin files
+      #      - creates a new SVN tag matching the GitHub release tag
+      #
+      #    Required repository secrets (Settings → Secrets → Actions):
+      #      SVN_USERNAME  — your WordPress.org username (steveb27)
+      #      SVN_PASSWORD  — your WordPress.org password
+      # -----------------------------------------------------------------------
+      - name: Deploy to WordPress.org Plugin Directory
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          # Generate a ZIP and attach it to the GitHub Release as well
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          # Must match your approved WordPress.org plugin slug
+          SLUG: seamless-video-uploader
+
+      # -----------------------------------------------------------------------
+      # 3. Attach the ZIP to the GitHub Release as a downloadable asset
+      # -----------------------------------------------------------------------
+      - name: Upload ZIP to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.deploy.outputs.zip-path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
