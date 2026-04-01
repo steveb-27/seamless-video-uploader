@@ -1,6 +1,7 @@
 .github/
 .git/
 .idea/
+marketing/
 .gitignore
 .DS_Store
 README.md

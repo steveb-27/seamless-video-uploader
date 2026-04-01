@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seamless Video Uploader — WP.org Assets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cyan:     #00d4ff;
+            --cyan-lo:  rgba(0, 212, 255, 0.08);
+            --bg:       #03050c;
+            --white:    #eaf0ff;
+            --muted:    rgba(234, 240, 255, 0.38);
+        }
+
+        body {
+            background: #080b12;
+            font-family: 'Outfit', sans-serif;
+            color: #3a4a5a;
+            padding: 52px 52px 100px;
+            overflow-x: auto;
+            min-width: 1660px;
+        }
+
+        /* ── Page chrome ─────────────────────────────────── */
+
+        .guide-heading {
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #1e2d3e;
+            margin-bottom: 8px;
+        }
+
+        .guide-steps {
+            font-size: 12px;
+            color: #1e2d3e;
+            line-height: 2;
+            margin-bottom: 56px;
+        }
+
+        .guide-steps strong { color: #2a3f52; font-weight: 600; }
+
+        .section { margin-bottom: 72px; }
+
+        .section-label {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #1c2b3a;
+            letter-spacing: 0.07em;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .section-label::after {
+            content: '';
+            height: 1px;
+            flex: 1;
+            background: #0e1722;
+        }
+
+        /* ── BANNER 1544 × 500 ───────────────────────────── */
+
+        .banner {
+            width: 1544px;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+            display: block;
+        }
+
+        /* Atmospheric glow layers */
+        .b-glow {
+            position: absolute;
+            inset: 0;
+            background:
+                    radial-gradient(ellipse 50% 90% at 22% 55%, rgba(0,180,255,0.11) 0%, transparent 65%),
+                    radial-gradient(ellipse 30% 60% at 82% 42%, rgba(0,140,210,0.05) 0%, transparent 55%),
+                    radial-gradient(circle at 50% 110%, rgba(0,80,140,0.18) 0%, transparent 55%);
+        }
+
+        /* Very subtle CRT scanlines */
+        .b-scanlines {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    180deg,
+                    transparent      0px,
+                    transparent      3px,
+                    rgba(0,0,0,0.10) 3px,
+                    rgba(0,0,0,0.10) 4px
+            );
+        }
+
+        /* Ghost "VIDEO" text behind everything */
+        .b-ghost {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .b-ghost-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 420px;
+            color: rgba(0, 212, 255, 0.022);
+            line-height: 1;
+            user-select: none;
+            white-space: nowrap;
+            margin-top: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Content layer */
+        .b-body {
+            position: absolute;
+            inset: 0;
+            display: flex;
+        }
+
+        /* ── Left text panel ── */
+
+        .b-left {
+            width: 660px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 72px;
+        }
+
+        .b-eyebrow {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .b-eyebrow::before {
+            content: '';
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--cyan);
+            flex-shrink: 0;
+        }
+
+        .b-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 130px;
+            line-height: 0.84;
+            letter-spacing: 0.015em;
+            color: var(--white);
+            margin-bottom: 30px;
+        }
+
+        .b-title-accent { color: var(--cyan); }
+
+        .b-tagline {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            color: var(--muted);
+            letter-spacing: 0.07em;
+            border-left: 2px solid rgba(0, 212, 255, 0.28);
+            padding-left: 16px;
+        }
+
+        /* ── Vertical separator ── */
+
+        .b-sep {
+            width: 1px;
+            align-self: stretch;
+            flex-shrink: 0;
+            background: linear-gradient(
+                    180deg,
+                    transparent     0%,
+                    rgba(0,212,255,0.22) 28%,
+                    rgba(0,212,255,0.22) 72%,
+                    transparent    100%
+            );
+        }
+
+        /* ── Right visual panel ── */
+
+        .b-right {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .b-credit {
+            position: absolute;
+            bottom: 26px;
+            right: 56px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(0, 212, 255, 0.2);
+        }
+
+        /* ── ICON 256 × 256 ─────────────────────────────── */
+
+        .icon {
+            width: 256px;
+            height: 256px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+            display: block;
+        }
+
+        /* ── 128px preview ──────────────────────────────── */
+
+        .icon-sm {
+            width: 128px;
+            height: 128px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+            display: block;
+        }
+
+        .icon-sm svg { width: 128px; height: 128px; }
+
+    </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     HIDDEN SVG DEFS — grain filter shared by both assets
+═══════════════════════════════════════════════════════════════════ -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+        <filter id="grain" x="0%" y="0%" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
+            <feColorMatrix type="saturate" values="0" in="noise" result="grey"/>
+            <feBlend in="SourceGraphic" in2="grey" mode="overlay" result="blended"/>
+            <feComposite in="blended" in2="SourceGraphic" operator="in"/>
+        </filter>
+
+        <!-- Icon radial gradient -->
+        <radialGradient id="iconGlow" cx="38%" cy="32%" r="68%" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stop-color="#00d4ff" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#03050c" stop-opacity="0"/>
+        </radialGradient>
+
+        <!-- Grain for icon -->
+        <filter id="iconGrain" x="0%" y="0%" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.80" numOctaves="4" stitchTiles="stitch" result="noise"/>
+            <feColorMatrix type="saturate" values="0" in="noise" result="grey"/>
+            <feBlend in="SourceGraphic" in2="grey" mode="overlay" result="blended"/>
+            <feComposite in="blended" in2="SourceGraphic" operator="in"/>
+        </filter>
+    </defs>
+</svg>
+
+<!-- ── INSTRUCTIONS ─────────────────────────────────────────────── -->
+<p class="guide-heading">Seamless Video Uploader — WordPress.org Asset Sheet</p>
+<p class="guide-steps">
+    <strong>1.</strong> Set browser zoom to exactly <strong>100%</strong> (Cmd/Ctrl + 0). &nbsp;
+    <strong>2.</strong> Screenshot each asset flush to its edges (no page chrome). &nbsp;
+    <strong>3.</strong> Save banner as <strong>banner-1544x500.png</strong>, then resize a copy to <strong>banner-772x250.png</strong>. &nbsp;
+    <strong>4.</strong> Save icon as <strong>icon-256x256.png</strong>, resize a copy to <strong>icon-128x128.png</strong>. &nbsp;
+    <strong>5.</strong> Place all files in <strong>.wordpress-org/</strong> in your repo root.
+</p>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     BANNER  1544 × 500
+═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+    <div class="section-label">banner-1544x500.png &nbsp;·&nbsp; resize a copy to banner-772x250.png</div>
+
+    <div class="banner">
+
+        <!-- Bg layers -->
+        <div class="b-glow"></div>
+        <div class="b-scanlines"></div>
+
+        <!-- Film-grain overlay -->
+        <svg style="position:absolute;inset:0;width:1544px;height:500px;opacity:0.35;pointer-events:none" viewBox="0 0 1544 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="1544" height="500" fill="rgba(255,255,255,0.04)" filter="url(#grain)"/>
+        </svg>
+
+        <!-- Ghost background text -->
+        <div class="b-ghost">
+            <span class="b-ghost-text">VIDEO</span>
+        </div>
+
+        <!-- Structural / decorative SVG lines -->
+        <svg style="position:absolute;inset:0;width:1544px;height:500px;pointer-events:none" viewBox="0 0 1544 500" xmlns="http://www.w3.org/2000/svg">
+            <!-- Faint horizontal rule at 1/3 and 2/3 height -->
+            <line x1="0" y1="166" x2="660" y2="166" stroke="rgba(0,212,255,0.04)" stroke-width="1"/>
+            <line x1="0" y1="333" x2="660" y2="333" stroke="rgba(0,212,255,0.04)" stroke-width="1"/>
+            <!-- Corner accent top-left -->
+            <path d="M0 32 L32 32 L32 0" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1.5" stroke-linecap="square"/>
+            <!-- Corner accent bottom-left -->
+            <path d="M0 468 L32 468 L32 500" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1.5" stroke-linecap="square"/>
+        </svg>
+
+        <!-- Main content -->
+        <div class="b-body">
+
+            <!-- ── Left text ── -->
+            <div class="b-left">
+                <div class="b-eyebrow">for WordPress</div>
+                <div class="b-title">
+                    Seamless<br>
+                    <span class="b-title-accent">Video</span><br>
+                    Uploader
+                </div>
+                <div class="b-tagline">Upload once. Play everywhere.</div>
+            </div>
+
+            <!-- ── Separator ── -->
+            <div class="b-sep"></div>
+
+            <!-- ── Right visual ── -->
+            <div class="b-right">
+
+                <!--
+                  Central composition: concentric rings + play mark + upload arrow
+                  Two ghost video-frame cards floating at corners
+                -->
+                <svg width="460" height="460" viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    <!-- Outermost dashed orbit ring -->
+                    <circle cx="230" cy="230" r="218" stroke="#00d4ff" stroke-width="1" stroke-dasharray="5 9" opacity="0.15"/>
+
+                    <!-- Second ring -->
+                    <circle cx="230" cy="230" r="168" stroke="#00d4ff" stroke-width="0.75" opacity="0.10"/>
+
+                    <!-- Node dots on outer ring (compass points) -->
+                    <circle cx="230" cy="12"  r="3" fill="#00d4ff" opacity="0.22"/>
+                    <circle cx="448" cy="230" r="3" fill="#00d4ff" opacity="0.14"/>
+                    <circle cx="12"  cy="230" r="3" fill="#00d4ff" opacity="0.14"/>
+                    <circle cx="230" cy="448" r="3" fill="#00d4ff" opacity="0.14"/>
+
+                    <!-- Inner circle — the badge -->
+                    <circle cx="230" cy="230" r="110" fill="rgba(0,212,255,0.055)" stroke="#00d4ff" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Upload arrow above play button (inside badge) -->
+                    <!-- Horizontal target bar -->
+                    <line x1="214" y1="180" x2="246" y2="180" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+                    <!-- Arrow shaft -->
+                    <line x1="230" y1="188" x2="230" y2="206" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+                    <!-- Arrow head -->
+                    <polyline points="222,196 230,188 238,196" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.55"/>
+
+                    <!-- Play triangle — the hero element -->
+                    <path d="M206 242 L265 275 L206 308 Z" fill="#00d4ff" opacity="0.95"/>
+
+                    <!-- Ghost video-frame card — upper area of composition -->
+                    <g opacity="0.20">
+                        <rect x="28" y="110" width="108" height="68" rx="5" stroke="#00d4ff" stroke-width="1" fill="rgba(0,212,255,0.05)"/>
+                        <!-- Tiny play in ghost card -->
+                        <path d="M60 136 L76 144 L60 152 Z" fill="#00d4ff"/>
+                        <!-- Progress bar stub -->
+                        <line x1="46" y1="165" x2="120" y2="165" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                        <circle cx="72" cy="165" r="3" fill="#00d4ff" opacity="0.6"/>
+                    </g>
+
+                    <!-- Ghost video-frame card — lower area of composition -->
+                    <g opacity="0.13">
+                        <rect x="326" y="288" width="108" height="68" rx="5" stroke="#00d4ff" stroke-width="1" fill="rgba(0,212,255,0.04)"/>
+                        <path d="M356 314 L372 322 L356 330 Z" fill="#00d4ff"/>
+                        <line x1="344" y1="343" x2="416" y2="343" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                        <circle cx="376" cy="343" r="3" fill="#00d4ff" opacity="0.6"/>
+                    </g>
+
+                </svg>
+
+                <!-- Author credit -->
+                <div class="b-credit">steveb27.com</div>
+
+            </div><!-- /.b-right -->
+        </div><!-- /.b-body -->
+    </div><!-- /.banner -->
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     ICON  256 × 256
+═══════════════════════════════════════════════════════════════════ -->
+<div class="section">
+    <div class="section-label">icon-256x256.png &nbsp;·&nbsp; resize a copy to icon-128x128.png</div>
+
+    <div style="display:flex;align-items:flex-start;gap:40px;">
+
+        <!-- Full 256×256 -->
+        <div>
+            <div class="icon">
+                <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+
+                    <!-- Base -->
+                    <rect width="256" height="256" fill="#03050c"/>
+
+                    <!-- Radial glow -->
+                    <rect width="256" height="256" fill="url(#iconGlow)"/>
+
+                    <!-- Grain overlay -->
+                    <rect width="256" height="256" fill="rgba(255,255,255,0.035)" filter="url(#iconGrain)" opacity="0.5"/>
+
+                    <!-- Scanlines -->
+                    <rect width="256" height="256" fill="url(#iconScanlines)" opacity="0.5"/>
+
+                    <!-- Outer dashed ring -->
+                    <circle cx="128" cy="128" r="118" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4 8" opacity="0.18"/>
+
+                    <!-- Compass dots on outer ring -->
+                    <circle cx="128" cy="10"  r="2.5" fill="#00d4ff" opacity="0.25"/>
+                    <circle cx="246" cy="128" r="2.5" fill="#00d4ff" opacity="0.14"/>
+                    <circle cx="10"  cy="128" r="2.5" fill="#00d4ff" opacity="0.14"/>
+                    <circle cx="128" cy="246" r="2.5" fill="#00d4ff" opacity="0.14"/>
+
+                    <!-- Inner badge circle -->
+                    <circle cx="128" cy="128" r="82" fill="rgba(0,212,255,0.055)" stroke="#00d4ff" stroke-width="1.5" opacity="0.65"/>
+
+                    <!-- Upload arrow — horizontal bar -->
+                    <line x1="114" y1="86"  x2="142" y2="86"  stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                    <!-- Arrow shaft -->
+                    <line x1="128" y1="93"  x2="128" y2="110" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                    <!-- Arrow head -->
+                    <polyline points="120,101 128,93 136,101" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+
+                    <!-- Play triangle — main hero mark -->
+                    <path d="M108 130 L156 158 L108 186 Z" fill="#00d4ff" opacity="0.95"/>
+
+                </svg>
+            </div>
+        </div>
+
+        <!-- 128×128 preview -->
+        <div>
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:#1a2a38;margin-bottom:10px;letter-spacing:0.07em;">128×128 preview (how it looks in WP admin)</div>
+            <div class="icon-sm">
+                <svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+                    <rect width="256" height="256" fill="#03050c"/>
+                    <rect width="256" height="256" fill="url(#iconGlow)"/>
+                    <circle cx="128" cy="128" r="118" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4 8" opacity="0.18"/>
+                    <circle cx="128" cy="10"  r="2.5" fill="#00d4ff" opacity="0.25"/>
+                    <circle cx="128" cy="128" r="82" fill="rgba(0,212,255,0.055)" stroke="#00d4ff" stroke-width="1.5" opacity="0.65"/>
+                    <line x1="114" y1="86"  x2="142" y2="86"  stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                    <line x1="128" y1="93"  x2="128" y2="110" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                    <polyline points="120,101 128,93 136,101" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+                    <path d="M108 130 L156 158 L108 186 Z" fill="#00d4ff" opacity="0.95"/>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

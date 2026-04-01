@@ -4,7 +4,7 @@ Tags: video, upload, autoplay, woocommerce, media
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,3 +89,6 @@ Edit `css/frontend.css` to change the visual style, and `js/frontend.js` to adju
 
 = 1.0.1 =
 Minor improvements: i18n support, a review prompt, and admin polish. Safe to update.
+
+= 1.0.2 =
+Minor improvements: Add directory graphics and packaging workflow
