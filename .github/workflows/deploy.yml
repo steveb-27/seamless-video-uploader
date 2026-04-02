@@ -32,6 +32,7 @@ jobs:
       #      SVN_PASSWORD  — your WordPress.org password
       # -----------------------------------------------------------------------
       - name: Deploy to WordPress.org Plugin Directory
+        id: deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
         with:
           # Generate a ZIP and attach it to the GitHub Release as well
