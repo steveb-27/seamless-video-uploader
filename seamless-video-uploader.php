@@ -187,7 +187,7 @@ class Seamless_Video_Uploader {
             }
         }
         // Inline SVG data URI — no external request, always available.
-        return $this->get_video_placeholder_svg();
+        return $this->get_video_placeholder_url();
     }
 
     /**
@@ -229,21 +229,18 @@ class Seamless_Video_Uploader {
 
         // Fall back to SVG placeholder.  Return dimensions that match a square
         // thumbnail so layout doesn't collapse.
-        $placeholder = $this->get_video_placeholder_svg();
+        $placeholder = $this->get_video_placeholder_url();
         return array($placeholder, 200, 200, false);
     }
 
     /**
-     * Inline SVG data URI used as a fallback thumbnail for video attachments.
-     * Returns a dark frame with a white play triangle — no external request needed.
+     * URL to the plugin's video placeholder image.
+     * Using a real file URL (not a data URI) is essential — esc_url() silently
+     * strips data: URIs, which would leave data-thumb="" and cause WooCommerce's
+     * gallery JS to render <img src="">.
      */
-    private function get_video_placeholder_svg() {
-        return 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
-                '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">'
-                . '<rect fill="#111827" width="200" height="200"/>'
-                . '<polygon fill="#ffffff" opacity="0.75" points="75,55 75,145 145,100"/>'
-                . '</svg>'
-            );
+    private function get_video_placeholder_url() {
+        return SVU_PLUGIN_URL . 'img/video-placeholder.svg';
     }
 
     public function enhance_video_content($content) {
