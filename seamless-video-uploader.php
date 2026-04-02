@@ -11,7 +11,7 @@
  * Text Domain: seamless-video-uploader
  * Requires at least: 6.0
  * Requires PHP: 7.2
- * Tested up to: 6.7
+ * Tested up to: 6.9
  */
 
 // Exit if accessed directly
