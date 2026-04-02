@@ -3,7 +3,7 @@
  * Plugin Name: Seamless Video Uploader
  * Plugin URI: https://steveb27.com/seamless-video-uploader
  * Description: Enables video uploads through the media library and automatically inserts them with autoplay, muted, and fullscreen controls. Works with pages, posts, and WooCommerce product galleries.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Steve B-27
  * Author URI: https://steveb27.com
  * License: GPL v2 or later
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SVU_VERSION', '1.0.1');
+define('SVU_VERSION', '1.0.2');
 define('SVU_PLUGIN_FILE', __FILE__);
 define('SVU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SVU_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -41,6 +41,7 @@ class Seamless_Video_Uploader {
         add_filter('upload_mimes',                              array($this, 'add_video_mime_types'));
         add_filter('media_send_to_editor',                      array($this, 'insert_video_html'), 10, 3);
         add_filter('wp_get_attachment_image',                   array($this, 'replace_video_thumbnail'), 10, 5);
+        add_filter('wp_get_attachment_image_src',               array($this, 'video_attachment_image_src'), 10, 4);
         add_action('admin_enqueue_scripts',                     array($this, 'enqueue_admin_scripts'));
         add_action('wp_enqueue_scripts',                        array($this, 'enqueue_frontend_scripts'));
         add_filter('woocommerce_single_product_image_thumbnail_html', array($this, 'woocommerce_video_thumbnail'), 10, 2);
@@ -186,6 +187,57 @@ class Seamless_Video_Uploader {
             }
         }
         // Inline SVG data URI — no external request, always available.
+        return $this->get_video_placeholder_svg();
+    }
+
+    /**
+     * Hook: wp_get_attachment_image_src
+     *
+     * WooCommerce's thumbnail strip (and any other caller of wp_get_attachment_image_src)
+     * gets false/empty for video attachments because videos have no intrinsic image.
+     * This causes the thumbnail <img> to render with src="" (blank image).
+     *
+     * We intercept here — before the <img> is built — and return a valid image array
+     * pointing to the poster image or our SVG placeholder, so the thumbnail always
+     * has something to display.
+     *
+     * @param array|false $image  Existing result: [ url, width, height, is_intermediate ]
+     * @param int         $attachment_id
+     * @param mixed       $size
+     * @param bool        $icon
+     * @return array|false
+     */
+    public function video_attachment_image_src($image, $attachment_id, $size, $icon) {
+        // Only act when WP couldn't produce an image (the normal case for videos).
+        if ($image) {
+            return $image;
+        }
+
+        $post = get_post($attachment_id);
+        if (!$post || strpos($post->post_mime_type, 'video/') !== 0) {
+            return $image;
+        }
+
+        // Try a real poster image first.
+        $thumb_id = get_post_thumbnail_id($attachment_id);
+        if ($thumb_id) {
+            $src = wp_get_attachment_image_src($thumb_id, $size);
+            if ($src) {
+                return $src;
+            }
+        }
+
+        // Fall back to SVG placeholder.  Return dimensions that match a square
+        // thumbnail so layout doesn't collapse.
+        $placeholder = $this->get_video_placeholder_svg();
+        return array($placeholder, 200, 200, false);
+    }
+
+    /**
+     * Inline SVG data URI used as a fallback thumbnail for video attachments.
+     * Returns a dark frame with a white play triangle — no external request needed.
+     */
+    private function get_video_placeholder_svg() {
         return 'data:image/svg+xml;charset=utf-8,' . rawurlencode(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">'
                 . '<rect fill="#111827" width="200" height="200"/>'
