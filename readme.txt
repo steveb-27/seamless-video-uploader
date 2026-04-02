@@ -67,6 +67,9 @@ Edit `css/frontend.css` to change the visual style, and `js/frontend.js` to adju
 3. Video in a WooCommerce product gallery alongside images.
 
 == Changelog ==
+= 1.0.2 =
+* Added deployment workflow to Wordpress.org
+* Added marketing graphics for Wordpress.org plugin directory
 
 = 1.0.1 =
 * Added `Requires at least`, `Tested up to`, and `Requires PHP` headers.
@@ -86,9 +89,6 @@ Edit `css/frontend.css` to change the visual style, and `js/frontend.js` to adju
 * Responsive design and viewport-aware pause.
 
 == Upgrade Notice ==
-
-= 1.0.1 =
-Minor improvements: i18n support, a review prompt, and admin polish. Safe to update.
 
 = 1.0.2 =
 Minor improvements: Add directory graphics and packaging workflow

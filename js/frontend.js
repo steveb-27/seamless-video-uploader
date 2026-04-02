@@ -118,31 +118,38 @@
         }
 
         /**
-         * Handle WooCommerce product gallery
+         * Handle WooCommerce product gallery.
+         *
+         * WooCommerce's gallery JS (photoswipe + flexslider) tries to open a
+         * lightbox when any gallery item is clicked. For video items we need to:
+         *   1. Block the lightbox entirely on that item.
+         *   2. Let clicks on the video element itself behave normally (play/pause).
          */
         function initWooCommerceGallery() {
             if (typeof wc_single_product_params === 'undefined') {
                 return;
             }
 
-            // Handle video in product gallery
-            $('.woocommerce-product-gallery').on('click', '.sb27-video-container', function(e) {
-                // Prevent opening in lightbox/photoswipe
-                if (!$(e.target).is('video, .sb27-fullscreen-btn, .sb27-fullscreen-btn *')) {
-                    const video = $(this).find('video')[0];
-                    if (video.paused) {
-                        video.play();
-                    } else {
-                        video.pause();
-                    }
+            var $gallery = $('.woocommerce-product-gallery');
+
+            // Block photoswipe / WooCommerce lightbox from firing on video gallery items.
+            // WooCommerce triggers it via a click on the wrapping anchor inside
+            // .woocommerce-product-gallery__image. We intercept that click when the
+            // item also carries data-svu-video="1".
+            $gallery.on('click', '[data-svu-video="1"]', function(e) {
+                // Allow clicks directly on the video element and its controls to pass through.
+                if ($(e.target).closest('video, .sb27-fullscreen-btn').length) {
+                    return;
                 }
+                // Anything else (the wrapper div, an accidental anchor) — block lightbox.
+                e.preventDefault();
+                e.stopImmediatePropagation();
             });
 
-            // Pause videos when lightbox opens on other images
-            $('.woocommerce-product-gallery').on('click', 'a:not(.sb27-video-container a)', function() {
-                $('.woocommerce-product-gallery video').each(function() {
-                    this.pause();
-                });
+            // Pause all gallery videos whenever the user opens the lightbox for
+            // a non-video item (so audio doesn't keep playing behind the overlay).
+            $gallery.on('click', '.woocommerce-product-gallery__image:not([data-svu-video])', function() {
+                $gallery.find('video').each(function() { this.pause(); });
             });
         }
 
