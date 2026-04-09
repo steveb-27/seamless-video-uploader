@@ -2,8 +2,11 @@ name: Create Plugin Release
 
 on:
   release:
-    types: [created]   # same as your theme workflow
-  workflow_dispatch:    # allow manual trigger
+    types: [created]
+  workflow_dispatch:
+
+env:
+  PLUGIN_SLUG: seamless-video-uploader
 
 jobs:
   build:
@@ -13,9 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # -----------------------------
-      # Get release info (same pattern as theme)
-      # -----------------------------
       - name: Get release info
         id: release_info
         run: |
@@ -26,51 +26,21 @@ jobs:
             echo "tag_name=manual-build" >> $GITHUB_OUTPUT
           fi
 
-      # -----------------------------
-      # (Optional) Build step for plugin assets
-      # If you have npm build, add it here like in your theme
-      # -----------------------------
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 18
-      #
-      # - name: Install npm dependencies
-      #   run: npm install
-      #
-      # - name: Build assets
-      #   run: npm run build
+      # If you need npm build steps, add them here like in your theme workflow
 
-      # -----------------------------
-      # Create clean plugin package
-      # -----------------------------
-      - name: Create plugin zip
+      - name: Build distributable using .distignore
         run: |
-          mkdir -p /tmp/seamless-video-uploader
+          mkdir -p /tmp/${{ env.PLUGIN_SLUG }}
 
-          rsync -av --delete \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='node_modules' \
-            --exclude='.gitignore' \
-            --exclude='.gitattributes' \
-            --exclude='.DS_Store' \
-            --exclude='__MACOSX' \
-            --exclude='._*' \
-            --exclude='*.log' \
-            --exclude='coverage' \
-            --exclude='tests' \
-            ./ /tmp/seamless-video-uploader/
+          # Copy everything except what's listed in .distignore
+          rsync -rc --delete \
+            --exclude-from='.distignore' \
+            ./ /tmp/${{ env.PLUGIN_SLUG }}/
 
           cd /tmp
-          zip -r seamless-video-uploader.zip seamless-video-uploader/
+          zip -r ${{ env.PLUGIN_SLUG }}.zip ${{ env.PLUGIN_SLUG }}/
+          mv ${{ env.PLUGIN_SLUG }}.zip $GITHUB_WORKSPACE/
 
-          # Move it back to workspace
-          mv seamless-video-uploader.zip $GITHUB_WORKSPACE/
-
-      # -----------------------------
-      # Upload to GitHub Release
-      # -----------------------------
       - name: Upload Release Asset
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
@@ -78,28 +48,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release_info.outputs.upload_url }}
-          asset_path: ./seamless-video-uploader.zip
-          asset_name: seamless-video-uploader.zip
+          asset_path: ./${{ env.PLUGIN_SLUG }}.zip
+          asset_name: ${{ env.PLUGIN_SLUG }}.zip
           asset_content_type: application/zip
 
-      # -----------------------------
-      # Upload artifact for manual runs
-      # -----------------------------
       - name: Upload artifact (for manual runs)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
-          name: seamless-video-uploader
-          path: seamless-video-uploader.zip
+          name: ${{ env.PLUGIN_SLUG }}
+          path: ${{ env.PLUGIN_SLUG }}.zip
 
-      # -----------------------------
-      # (Commented out) Deploy to WordPress.org
-      # -----------------------------
+      # --- Uncomment later when wp.org SVN is ready ---
       # - name: Deploy to WordPress.org Plugin Directory
       #   uses: 10up/action-wordpress-plugin-deploy@stable
       #   with:
-      #     generate-zip: true
+      #     generate-zip: false
       #   env:
       #     SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
       #     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-      #     SLUG: seamless-video-uploader
+      #     SLUG: ${{ env.PLUGIN_SLUG }}
