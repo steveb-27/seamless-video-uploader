@@ -1,58 +1,105 @@
-name: Build plugin ZIP (and optionally deploy to WordPress.org)
+name: Create Plugin Release
 
 on:
   release:
-    types: [published]
-
-env:
-  PLUGIN_SLUG: seamless-video-uploader
+    types: [created]   # same as your theme workflow
+  workflow_dispatch:    # allow manual trigger
 
 jobs:
   build:
-    name: Build plugin ZIP
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Check out your repo at the release tag
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Prepare a clean build directory using .distignore
-      - name: Prepare build directory
-        # --delete keeps the build dir in sync if you rerun locally; not strictly needed in CI
+      # -----------------------------
+      # Get release info (same pattern as theme)
+      # -----------------------------
+      - name: Get release info
+        id: release_info
         run: |
-          mkdir -p build/${{ env.PLUGIN_SLUG }}
-          rsync -rc --delete \
-            --exclude-from='.distignore' \
-            ./ build/${{ env.PLUGIN_SLUG }}/
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+            echo "upload_url=${{ github.event.release.upload_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag_name=manual-build" >> $GITHUB_OUTPUT
+          fi
 
-      # 3. Create the ZIP (no __MACOSX, no hidden resource forks)
-      - name: Create ZIP
+      # -----------------------------
+      # (Optional) Build step for plugin assets
+      # If you have npm build, add it here like in your theme
+      # -----------------------------
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 18
+      #
+      # - name: Install npm dependencies
+      #   run: npm install
+      #
+      # - name: Build assets
+      #   run: npm run build
+
+      # -----------------------------
+      # Create clean plugin package
+      # -----------------------------
+      - name: Create plugin zip
         run: |
-          cd build
-          zip -r "../${{ env.PLUGIN_SLUG }}-${{ github.ref_name }}.zip" "${{ env.PLUGIN_SLUG }}/"
+          mkdir -p /tmp/seamless-video-uploader
 
-      # 4. Attach ZIP to the GitHub Release
-      - name: Upload ZIP to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: "${{ env.PLUGIN_SLUG }}-${{ github.ref_name }}.zip"
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.gitignore' \
+            --exclude='.gitattributes' \
+            --exclude='.DS_Store' \
+            --exclude='__MACOSX' \
+            --exclude='._*' \
+            --exclude='*.log' \
+            --exclude='coverage' \
+            --exclude='tests' \
+            ./ /tmp/seamless-video-uploader/
+
+          cd /tmp
+          zip -r seamless-video-uploader.zip seamless-video-uploader/
+
+          # Move it back to workspace
+          mv seamless-video-uploader.zip $GITHUB_WORKSPACE/
+
+      # -----------------------------
+      # Upload to GitHub Release
+      # -----------------------------
+      - name: Upload Release Asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release_info.outputs.upload_url }}
+          asset_path: ./seamless-video-uploader.zip
+          asset_name: seamless-video-uploader.zip
+          asset_content_type: application/zip
 
-      # -----------------------------------------------------------------------
-      # 5. Deploy to WordPress.org (COMMENTED OUT FOR NOW)
-      #
-      #    Uncomment this block once your plugin is approved and the SVN repo
-      #    exists. At that point, you can:
-      #      - either let 10up generate its own ZIP (generate-zip: true)
-      #      - or keep generate-zip: false if you're only using the build ZIP
-      # -----------------------------------------------------------------------
+      # -----------------------------
+      # Upload artifact for manual runs
+      # -----------------------------
+      - name: Upload artifact (for manual runs)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seamless-video-uploader
+          path: seamless-video-uploader.zip
+
+      # -----------------------------
+      # (Commented out) Deploy to WordPress.org
+      # -----------------------------
       # - name: Deploy to WordPress.org Plugin Directory
       #   uses: 10up/action-wordpress-plugin-deploy@stable
       #   with:
-      #     generate-zip: false
+      #     generate-zip: true
       #   env:
       #     SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
       #     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-      #     SLUG: ${{ env.PLUGIN_SLUG }}
+      #     SLUG: seamless-video-uploader
