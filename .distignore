@@ -1,7 +1,49 @@
-.github/
-.git/
-.idea/
-marketing/
-.gitignore
+# OS / Finder cruft
 .DS_Store
+__MACOSX
+._*
+Thumbs.db
+
+# VCS / GitHub
+.git
+.gitignore
+.gitattributes
+.github
+
+# IDE / editor
+.vscode
+.idea
+*.code-workspace
+
+# Node / build tooling
+node_modules
+npm-debug.log*
+yarn.lock
+package.json
+package-lock.json
+webpack.config.*
+rollup.config.*
+vite.config.*
+.eslintrc*
+.prettierrc*
+.postcssrc*
+
+# Composer / PHP tooling
+vendor
+composer.json
+composer.lock
+phpunit.xml*
+
+# Tests / docs / misc dev files
+tests
+tests-*
+bin
+tools
+docs
+*.md
+*.yml
+*.yaml
+*.xml
+*.dist
+marketing/
 README.md

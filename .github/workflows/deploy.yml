@@ -1,54 +1,58 @@
-name: Deploy to WordPress.org
+name: Build plugin ZIP (and optionally deploy to WordPress.org)
 
-# Triggers when you publish a GitHub Release (e.g. tag v1.0.2).
-# The tag name is used as the SVN tag on WordPress.org, so it must
-# match the Version in seamless-video-uploader.php and readme.txt.
 on:
   release:
     types: [published]
 
+env:
+  PLUGIN_SLUG: seamless-video-uploader
+
 jobs:
-  deploy:
-    name: Push to WordPress.org SVN
+  build:
+    name: Build plugin ZIP
     runs-on: ubuntu-latest
 
     steps:
-      # -----------------------------------------------------------------------
-      # 1. Check out the full repo at the release tag
-      # -----------------------------------------------------------------------
+      # 1. Check out your repo at the release tag
       - name: Checkout
         uses: actions/checkout@v4
 
-      # -----------------------------------------------------------------------
-      # 2. Deploy to WordPress.org
-      #
-      #    Uses the industry-standard 10up deploy action.
-      #    It reads .distignore to exclude dev-only files, then:
-      #      - syncs trunk/ with the plugin files
-      #      - creates a new SVN tag matching the GitHub release tag
-      #
-      #    Required repository secrets (Settings → Secrets → Actions):
-      #      SVN_USERNAME  — your WordPress.org username (steveb27)
-      #      SVN_PASSWORD  — your WordPress.org password
-      # -----------------------------------------------------------------------
-      - name: Deploy to WordPress.org Plugin Directory
-        id: deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
-        with:
-          # Generate a ZIP and attach it to the GitHub Release as well
-          generate-zip: true
-        env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          # Must match your approved WordPress.org plugin slug
-          SLUG: seamless-video-uploader
+      # 2. Prepare a clean build directory using .distignore
+      - name: Prepare build directory
+        # --delete keeps the build dir in sync if you rerun locally; not strictly needed in CI
+        run: |
+          mkdir -p build/${{ env.PLUGIN_SLUG }}
+          rsync -rc --delete \
+            --exclude-from='.distignore' \
+            ./ build/${{ env.PLUGIN_SLUG }}/
 
-      # -----------------------------------------------------------------------
-      # 3. Attach the ZIP to the GitHub Release as a downloadable asset
-      # -----------------------------------------------------------------------
+      # 3. Create the ZIP (no __MACOSX, no hidden resource forks)
+      - name: Create ZIP
+        run: |
+          cd build
+          zip -r "../${{ env.PLUGIN_SLUG }}-${{ github.ref_name }}.zip" "${{ env.PLUGIN_SLUG }}/"
+
+      # 4. Attach ZIP to the GitHub Release
       - name: Upload ZIP to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.deploy.outputs.zip-path }}
+          files: "${{ env.PLUGIN_SLUG }}-${{ github.ref_name }}.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # -----------------------------------------------------------------------
+      # 5. Deploy to WordPress.org (COMMENTED OUT FOR NOW)
+      #
+      #    Uncomment this block once your plugin is approved and the SVN repo
+      #    exists. At that point, you can:
+      #      - either let 10up generate its own ZIP (generate-zip: true)
+      #      - or keep generate-zip: false if you're only using the build ZIP
+      # -----------------------------------------------------------------------
+      # - name: Deploy to WordPress.org Plugin Directory
+      #   uses: 10up/action-wordpress-plugin-deploy@stable
+      #   with:
+      #     generate-zip: false
+      #   env:
+      #     SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+      #     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+      #     SLUG: ${{ env.PLUGIN_SLUG }}
