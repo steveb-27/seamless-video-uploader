@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Seamless Video Uploader
- * Plugin URI: https://steveb27.com/seamless-video-uploader
+ * Plugin URI: https://steveb27.com/product/seamless-video-uploader/
  * Description: Enables video uploads through the media library and automatically inserts them with autoplay, muted, and fullscreen controls. Works with pages, posts, and WooCommerce product galleries.
  * Version: 1.0.2
  * Author: Steve B-27

@@ -46,4 +46,5 @@ docs
 *.xml
 *.dist
 marketing/
+.wordpress-org
 README.md
