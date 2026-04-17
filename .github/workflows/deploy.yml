@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  PLUGIN_SLUG: seamless-video-uploader
+  PLUGIN_SLUG: steveb27-video-uploader
 
 jobs:
   build:

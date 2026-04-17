@@ -1,4 +1,4 @@
-# Seamless Video Uploader
+# SteveB27 Video Uploader
 
 A WordPress plugin that automatically applies autoplay, mute, loop, and a fullscreen toggle whenever a video is inserted from the media library — with no per-video configuration required. Also adds video support to WooCommerce product galleries.
 
@@ -28,8 +28,8 @@ The primary audience is users who want zero-configuration video behaviour — up
 ## File structure
 
 ```
-seamless-video-uploader/
-├── seamless-video-uploader.php   Main plugin file, all PHP logic
+steveb27-video-uploader/
+├── steveb27-video-uploader.php   Main plugin file, all PHP logic
 ├── readme.txt                    WordPress.org directory listing
 ├── css/
 │   ├── frontend.css              Public-facing video player styles
@@ -73,10 +73,10 @@ add_action( 'sb27_init', function() {
 
 ## Releases
 
-Releases are deployed automatically to WordPress.org SVN via GitHub Actions when a new release is published. The release tag must match the `Version` in `seamless-video-uploader.php` and the `Stable tag` in `readme.txt`.
+Releases are deployed automatically to WordPress.org SVN via GitHub Actions when a new release is published. The release tag must match the `Version` in `steveb27-video-uploader.php` and the `Stable tag` in `readme.txt`.
 
 **Release checklist:**
-- [ ] Bump `Version` in plugin header (`seamless-video-uploader.php`)
+- [ ] Bump `Version` in plugin header (`steveb27-video-uploader.php`)
 - [ ] Bump `Stable tag` in `readme.txt`
 - [ ] Update `Changelog` section in `readme.txt`
 - [ ] Add secrets to GitHub repo if not already set: `SVN_USERNAME`, `SVN_PASSWORD`
@@ -146,7 +146,7 @@ Screenshots must be PNG or JPG, max 1200px wide. Capture at a clean zoom level (
 ### Plugin Check tool
 
 - [ ] Install the [Plugin Check plugin](https://wordpress.org/plugins/plugin-check/) on a test site
-- [ ] Run it against Seamless Video Uploader and resolve any errors or warnings before submitting
+- [ ] Run it against SteveB27 Video Uploader and resolve any errors or warnings before submitting
 
 ### WordPress.org submission
 

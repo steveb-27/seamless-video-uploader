@@ -1,10 +1,10 @@
-=== Seamless Video Uploader ===
+=== SteveB27 Video Uploader ===
 Contributors: steveb27
 Tags: video, upload, autoplay, woocommerce, media
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Upload videos through the WordPress media library and insert them with autoplay,
 
 == Description ==
 
-Seamless Video Uploader extends the standard WordPress media library to handle video files as first-class citizens. Upload a video, click "Insert into post," and it lands on the page as a fully configured video player: autoplaying, muted, looping, and mobile-friendly — no shortcodes, no gutenberg blocks to configure, no fuss.
+SteveB27 Video Uploader extends the standard WordPress media library to handle video files as first-class citizens. Upload a video, click "Insert into post," and it lands on the page as a fully configured video player: autoplaying, muted, looping, and mobile-friendly — no shortcodes, no gutenberg blocks to configure, no fuss.
 
 **Features**
 
@@ -29,7 +29,7 @@ Seamless Video Uploader extends the standard WordPress media library to handle v
 
 == Installation ==
 
-1. Upload the `seamless-video-uploader` folder to `/wp-content/plugins/`.
+1. Upload the `steveb27-video-uploader` folder to `/wp-content/plugins/`.
 2. Activate the plugin through the **Plugins** menu in WordPress Admin.
 3. That's it — the plugin works immediately.
 
@@ -67,6 +67,9 @@ Edit `css/frontend.css` to change the visual style, and `js/frontend.js` to adju
 3. Video in a WooCommerce product gallery alongside images.
 
 == Changelog ==
+= 1.1.0 =
+* Changed extension name to 'SteveB27 Video Uploader'
+
 = 1.0.2 =
 * Added deployment workflow to Wordpress.org
 * Added marketing graphics for Wordpress.org plugin directory

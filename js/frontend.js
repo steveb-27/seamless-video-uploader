@@ -1,5 +1,5 @@
 /**
- * Seamless Video Uploader - Frontend JavaScript
+ * SteveB27 Video Uploader - Frontend JavaScript
  */
 
 (function($) {

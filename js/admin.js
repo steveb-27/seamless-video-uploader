@@ -1,5 +1,5 @@
 /**
- * Seamless Video Uploader - Admin JavaScript
+ * SteveB27 Video Uploader - Admin JavaScript
  */
 
 (function($) {
@@ -141,7 +141,7 @@
          */
         if ($('.upload-php').length || $('.post-type-product').length) {
             const notice = $('<div class="notice notice-info is-dismissible">')
-                .html('<p><strong>Seamless Video Uploader:</strong> You can now upload videos (MP4, WebM, etc.) and they will automatically play muted with fullscreen controls when inserted.</p>')
+                .html('<p><strong>SteveB27 Video Uploader:</strong> You can now upload videos (MP4, WebM, etc.) and they will automatically play muted with fullscreen controls when inserted.</p>')
                 .hide()
                 .fadeIn();
 

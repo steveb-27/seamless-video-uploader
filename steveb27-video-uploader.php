@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: Seamless Video Uploader
- * Plugin URI: https://steveb27.com/product/seamless-video-uploader/
+ * Plugin Name: SteveB27 Video Uploader
+ * Plugin URI: https://steveb27.com/product/steveb27-video-uploader/
  * Description: Enables video uploads through the media library and automatically inserts them with autoplay, muted, and fullscreen controls. Works with pages, posts, and WooCommerce product galleries.
  * Version: 1.0.2
  * Author: Steve B-27
  * Author URI: https://steveb27.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: seamless-video-uploader
+ * Text Domain: steveb27-video-uploader
  * Requires at least: 6.0
  * Requires PHP: 7.2
  * Tested up to: 6.9
@@ -23,10 +23,10 @@ define('SVU_VERSION', '1.0.2');
 define('SVU_PLUGIN_FILE', __FILE__);
 define('SVU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SVU_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('SVU_REVIEW_URL', 'https://wordpress.org/support/plugin/seamless-video-uploader/reviews/#new-post');
+define('SVU_REVIEW_URL', 'https://wordpress.org/support/plugin/steveb27-video-uploader/reviews/#new-post');
 define('SVU_AUTHOR_URL', 'https://steveb27.com');
 
-class Seamless_Video_Uploader {
+class SteveB27_Video_Uploader {
 
     private static $instance = null;
 
@@ -109,8 +109,8 @@ class Seamless_Video_Uploader {
             $class_attr,
             $poster_attr,
             esc_url($url),
-            esc_html__('Your browser does not support the video tag.', 'seamless-video-uploader'),
-            esc_attr__('Toggle Fullscreen', 'seamless-video-uploader')
+            esc_html__('Your browser does not support the video tag.', 'steveb27-video-uploader'),
+            esc_attr__('Toggle Fullscreen', 'steveb27-video-uploader')
         );
     }
 
@@ -144,8 +144,8 @@ class Seamless_Video_Uploader {
                 <span class="sb27-admin-video-label">%s</span>
             </div>',
             $title,
-            esc_attr__('Video attachment', 'seamless-video-uploader'),
-            esc_html__('VIDEO', 'seamless-video-uploader')
+            esc_attr__('Video attachment', 'steveb27-video-uploader'),
+            esc_html__('VIDEO', 'steveb27-video-uploader')
         );
     }
 
@@ -325,19 +325,19 @@ class Seamless_Video_Uploader {
                 <div class="svu-review-notice__icon">🎬</div>
                 <div class="svu-review-notice__content">
                     <p>
-                        <strong><?php esc_html_e('Seamless Video Uploader', 'seamless-video-uploader'); ?></strong> &mdash;
-                        <?php esc_html_e("You've been using the plugin for a week — thanks for sticking with it! If it's been useful, a quick review on WordPress.org would mean a lot and helps others find it.", 'seamless-video-uploader'); ?>
+                        <strong><?php esc_html_e('SteveB27 Video Uploader', 'steveb27-video-uploader'); ?></strong> &mdash;
+                        <?php esc_html_e("You've been using the plugin for a week — thanks for sticking with it! If it's been useful, a quick review on WordPress.org would mean a lot and helps others find it.", 'steveb27-video-uploader'); ?>
                     </p>
                     <p class="svu-review-notice__actions">
                         <a href="<?php echo esc_url(SVU_REVIEW_URL); ?>" target="_blank" rel="noopener noreferrer"
                            class="button button-primary svu-review-btn" data-svu-action="reviewed">
-                            ⭐ <?php esc_html_e('Leave a Review', 'seamless-video-uploader'); ?>
+                            ⭐ <?php esc_html_e('Leave a Review', 'steveb27-video-uploader'); ?>
                         </a>
                         <a href="#" class="button svu-review-btn" data-svu-action="reviewed">
-                            <?php esc_html_e('I already did!', 'seamless-video-uploader'); ?>
+                            <?php esc_html_e('I already did!', 'steveb27-video-uploader'); ?>
                         </a>
                         <a href="#" class="button-link svu-review-later" data-svu-action="later">
-                            <?php esc_html_e('Maybe later', 'seamless-video-uploader'); ?>
+                            <?php esc_html_e('Maybe later', 'steveb27-video-uploader'); ?>
                         </a>
                     </p>
                 </div>
@@ -387,9 +387,9 @@ class Seamless_Video_Uploader {
     public function add_plugin_action_links($links) {
         $extra = array(
             '<a href="' . esc_url(SVU_REVIEW_URL) . '" target="_blank" rel="noopener noreferrer">'
-            . esc_html__('Leave a Review', 'seamless-video-uploader') . '</a>',
+            . esc_html__('Leave a Review', 'steveb27-video-uploader') . '</a>',
             '<a href="' . esc_url(SVU_AUTHOR_URL) . '" target="_blank" rel="noopener noreferrer">'
-            . esc_html__('More Plugins', 'seamless-video-uploader') . '</a>',
+            . esc_html__('More Plugins', 'steveb27-video-uploader') . '</a>',
         );
         return array_merge($links, $extra);
     }
@@ -415,7 +415,7 @@ register_deactivation_hook(SVU_PLUGIN_FILE, 'svu_on_deactivation');
 // Bootstrap
 // -------------------------------------------------------------------------
 
-function seamless_video_uploader_init() {
-    return Seamless_Video_Uploader::get_instance();
+function steveb27_video_uploader_init() {
+    return SteveB27_Video_Uploader::get_instance();
 }
-add_action('plugins_loaded', 'seamless_video_uploader_init');
+add_action('plugins_loaded', 'steveb27_video_uploader_init');
