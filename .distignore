@@ -7,6 +7,7 @@ Thumbs.db
 # VCS / GitHub
 .git
 .gitignore
+.distignore
 .gitattributes
 .github
 
