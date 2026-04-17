@@ -3,7 +3,7 @@
  * Plugin Name: SteveB27 Video Uploader
  * Plugin URI: https://steveb27.com/product/steveb27-video-uploader/
  * Description: Enables video uploads through the media library and automatically inserts them with autoplay, muted, and fullscreen controls. Works with pages, posts, and WooCommerce product galleries.
- * Version: 1.0.2
+ * Version: 1.1.0
  * Author: Steve B-27
  * Author URI: https://steveb27.com
  * License: GPL v2 or later
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SVU_VERSION', '1.0.2');
+define('SVU_VERSION', '1.1.0');
 define('SVU_PLUGIN_FILE', __FILE__);
 define('SVU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SVU_PLUGIN_URL', plugin_dir_url(__FILE__));
