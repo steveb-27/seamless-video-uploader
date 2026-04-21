@@ -1,6 +1,6 @@
 /* SteveB27 Video Uploader - Frontend Styles */
 
-.sb27-video-container {
+.steveb27-video-container {
     position: relative;
     width: 100%;
     max-width: 100%;
@@ -10,14 +10,14 @@
     overflow: hidden;
 }
 
-.sb27-video-container video {
+.steveb27-video-container video {
     width: 100%;
     height: auto;
     display: block;
     max-width: 100%;
 }
 
-.sb27-fullscreen-btn {
+.steveb27-fullscreen-btn {
     position: absolute;
     bottom: 15px;
     right: 15px;
@@ -34,88 +34,88 @@
     justify-content: center;
 }
 
-.sb27-fullscreen-btn:hover {
+.steveb27-fullscreen-btn:hover {
     background: rgba(0, 0, 0, 0.9);
 }
 
-.sb27-fullscreen-btn svg {
+.steveb27-fullscreen-btn svg {
     width: 20px;
     height: 20px;
 }
 
 /* Fullscreen mode adjustments */
-.sb27-video-container:-webkit-full-screen {
+.steveb27-video-container:-webkit-full-screen {
     width: 100%;
     height: 100%;
 }
 
-.sb27-video-container:-moz-full-screen {
+.steveb27-video-container:-moz-full-screen {
     width: 100%;
     height: 100%;
 }
 
-.sb27-video-container:fullscreen {
+.steveb27-video-container:fullscreen {
     width: 100%;
     height: 100%;
 }
 
-.sb27-video-container:-webkit-full-screen video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.sb27-video-container:-moz-full-screen video {
+.steveb27-video-container:-webkit-full-screen video {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.sb27-video-container:fullscreen video {
+.steveb27-video-container:-moz-full-screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.steveb27-video-container:fullscreen video {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
 /* WooCommerce specific styles */
-.woocommerce-product-gallery .sb27-video-container {
+.woocommerce-product-gallery .steveb27-video-container {
     margin: 0;
     border-radius: 0;
 }
 
-.woocommerce-product-gallery__wrapper .sb27-video-container {
+.woocommerce-product-gallery__wrapper .steveb27-video-container {
     width: 100%;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .sb27-fullscreen-btn {
+    .steveb27-fullscreen-btn {
         padding: 6px 10px;
     }
 
-    .sb27-fullscreen-btn svg {
+    .steveb27-fullscreen-btn svg {
         width: 16px;
         height: 16px;
     }
 }
 
 /* Hide default video controls on autoplay */
-.sb27-video-container video::-webkit-media-controls {
+.steveb27-video-container video::-webkit-media-controls {
     opacity: 0.7;
 }
 
-.sb27-video-container video::-webkit-media-controls:hover {
+.steveb27-video-container video::-webkit-media-controls:hover {
     opacity: 1;
 }
 
 /* Ensure proper aspect ratio */
-.sb27-video-container::before {
+.steveb27-video-container::before {
     content: '';
     display: block;
     padding-top: 56.25%; /* 16:9 aspect ratio by default */
 }
 
-.sb27-video-container video {
+.steveb27-video-container video {
     position: absolute;
     top: 0;
     left: 0;
@@ -125,18 +125,18 @@
 }
 
 /* Override for specific size classes */
-.alignleft .sb27-video-container,
-.alignright .sb27-video-container {
+.alignleft .steveb27-video-container,
+.alignright .steveb27-video-container {
     max-width: 50%;
 }
 
-.aligncenter .sb27-video-container {
+.aligncenter .steveb27-video-container {
     margin-left: auto;
     margin-right: auto;
 }
 
 /* Loading state */
-.sb27-video-container.loading::after {
+.steveb27-video-container.loading::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -147,9 +147,9 @@
     border: 4px solid rgba(255, 255, 255, 0.3);
     border-top-color: #fff;
     border-radius: 50%;
-    animation: sb27-spin 0.8s linear infinite;
+    animation: steveb27-spin 0.8s linear infinite;
 }
 
-@keyframes sb27-spin {
+@keyframes steveb27-spin {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }

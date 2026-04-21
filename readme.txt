@@ -1,97 +1,102 @@
 === SteveB27 Video Uploader ===
 Contributors: steveb27
-Tags: video, upload, autoplay, woocommerce, media
+Tags: video, upload, media, autoplay, woocommerce
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Upload videos through the WordPress media library and insert them with autoplay, muted playback, and fullscreen controls — no shortcodes needed.
+Enable video uploads through the media library with autoplay, muted, and fullscreen controls. Works with pages, posts, and WooCommerce.
 
 == Description ==
 
-SteveB27 Video Uploader extends the standard WordPress media library to handle video files as first-class citizens. Upload a video, click "Insert into post," and it lands on the page as a fully configured video player: autoplaying, muted, looping, and mobile-friendly — no shortcodes, no gutenberg blocks to configure, no fuss.
+SteveB27 Video Uploader makes it easy to add videos to your WordPress site with the same simplicity as adding images. Videos automatically play muted with fullscreen controls when inserted into pages, posts, or WooCommerce product galleries.
 
-**Features**
+= Features =
 
 * Upload videos through the standard WordPress media uploader
-* Automatic insertion with autoplay (muted) and loop
+* Automatic video insertion with autoplay (muted)
 * Built-in fullscreen toggle button
 * Works with pages, posts, and custom post types
 * Full WooCommerce product gallery integration
-* Support for MP4, WebM, MOV, AVI, WMV, MPEG, and OGV
+* Support for multiple video formats (MP4, WebM, MOV, AVI, etc.)
 * Responsive and mobile-friendly
-* Videos pause automatically when scrolled out of viewport
-* Click the video to toggle mute/unmute
-* Keyboard shortcut: press **F** for fullscreen
+* Automatic pause when video is out of viewport (performance optimization)
+* Click video to toggle mute/unmute
+* Keyboard support (press 'F' for fullscreen)
+
+= Supported Video Formats =
+
+* MP4 (`.mp4`)
+* WebM (`.webm`)
+* MOV (`.mov`)
+* M4V (`.m4v`)
+* AVI (`.avi`)
+* WMV (`.wmv`)
+* MPEG (`.mpg`, `.mpeg`)
+* OGV (`.ogv`)
+
+= Usage =
+
+**For Pages/Posts:**
+1. Create or edit a page/post
+2. Click "Add Media" button
+3. Upload your video file (or select existing video)
+4. Click "Insert into post"
+5. The video will automatically be inserted with autoplay controls
+
+**For WooCommerce Products:**
+1. Edit a product
+2. In the "Product Gallery" section, click "Add product gallery images"
+3. Upload or select your video
+4. The video will appear in the gallery alongside images
+5. Videos will autoplay when visible in the gallery
 
 == Installation ==
 
-1. Upload the `steveb27-video-uploader` folder to `/wp-content/plugins/`.
-2. Activate the plugin through the **Plugins** menu in WordPress Admin.
-3. That's it — the plugin works immediately.
+1. Upload the plugin files to `/wp-content/plugins/steveb27-video-uploader/`
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Upload videos through the media library like you would images
 
 == Frequently Asked Questions ==
 
-= My videos won't autoplay. What's wrong? =
+= Why won't my videos autoplay? =
 
-Most browsers require videos to be muted before they allow autoplay. The plugin mutes videos by default for exactly this reason. If autoplay still doesn't work, check your browser console for errors.
+Some browsers block autoplay with sound. The plugin mutes videos by default to allow autoplay. Users can click the video to unmute.
 
-= Fullscreen isn't working. =
+= How do I make a video fullscreen? =
 
-Ensure your browser allows the Fullscreen API (some iframe embeds restrict it). You can also use the **F** keyboard shortcut as an alternative.
+Click the fullscreen button in the bottom-right corner of any video, or press 'F' on your keyboard while the video is focused.
 
-= Videos aren't appearing in my WooCommerce product gallery. =
+= Can I use this with WooCommerce? =
 
-Make sure WooCommerce is installed and activated, then clear your browser cache and any WooCommerce caches. Also confirm the video format is one of the supported types listed above.
+Yes! The plugin fully supports WooCommerce product galleries. Just add videos to your product gallery the same way you add images.
 
-= My file upload is failing. =
+= What video formats are supported? =
 
-Check your server's PHP upload limits in `php.ini`:
-* `upload_max_filesize`
-* `post_max_size`
-* `max_execution_time`
-
-Large video files often require increasing these values.
-
-= How do I change the video appearance or behaviour? =
-
-Edit `css/frontend.css` to change the visual style, and `js/frontend.js` to adjust autoplay thresholds, keyboard shortcuts, or mute behaviour. See the Developer Hooks section in the README for filter/action reference.
-
-== Screenshots ==
-
-1. Videos automatically get a play-icon overlay in the media library.
-2. Inserted video player with fullscreen button on a page.
-3. Video in a WooCommerce product gallery alongside images.
+The plugin supports MP4, WebM, MOV, M4V, AVI, WMV, MPEG, and OGV formats.
 
 == Changelog ==
+
+= 1.1.1 =
+* Fixed: Inline script properly enqueued using wp_add_inline_script()
+* Fixed: All function names now use unique steveb27_vu_ prefix
+* Fixed: All CSS class names now use steveb27- prefix
+* Improved: Better compliance with WordPress plugin directory guidelines
+
 = 1.1.0 =
-* Changed extension name to 'SteveB27 Video Uploader'
-
-= 1.0.2 =
-* Added deployment workflow to Wordpress.org
-* Added marketing graphics for Wordpress.org plugin directory
-
-= 1.0.1 =
-* Added `Requires at least`, `Tested up to`, and `Requires PHP` headers.
-* Added internationalisation (i18n) support across all user-facing strings.
-* Added polite review request notice (shown once after 7 days, dismissible).
-* Added "Leave a Review" and "More Plugins" links on the Plugins screen.
-* Extracted inline admin styles to `css/admin.css`.
-* Introduced plugin constants (`SVU_VERSION`, `SVU_PLUGIN_URL`, etc.) for maintainability.
-* Added activation/deactivation hooks.
+* Added: WooCommerce product gallery support
+* Added: Admin video thumbnail placeholders
+* Added: Review notice system
+* Improved: Video attachment handling in admin
+* Improved: Better mobile support
 
 = 1.0.0 =
-* Initial release.
-* Video upload support through the media library.
-* Autoplay with mute and loop.
-* Fullscreen controls.
-* WooCommerce product gallery integration.
-* Responsive design and viewport-aware pause.
+* Initial release
 
 == Upgrade Notice ==
 
-= 1.0.2 =
-Minor improvements: Add directory graphics and packaging workflow
+= 1.1.1 =
+This version fixes all WordPress plugin directory compliance issues. Update recommended.

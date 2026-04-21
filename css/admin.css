@@ -4,31 +4,31 @@
    Review notice
 ------------------------------------------------------------------------ */
 
-.svu-review-notice {
+.steveb27-vu-review-notice {
     border-left-color: #2271b1;
     padding: 12px 16px;
 }
 
-.svu-review-notice__inner {
+.steveb27-vu-review-notice__inner {
     display: flex;
     align-items: flex-start;
     gap: 14px;
 }
 
-.svu-review-notice__icon {
+.steveb27-vu-review-notice__icon {
     font-size: 28px;
     line-height: 1;
     flex-shrink: 0;
     margin-top: 2px;
 }
 
-.svu-review-notice__content p {
+.steveb27-vu-review-notice__content p {
     margin: 4px 0;
     font-size: 14px;
     line-height: 1.5;
 }
 
-.svu-review-notice__actions {
+.steveb27-vu-review-notice__actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -36,18 +36,18 @@
     margin-top: 10px !important;
 }
 
-.svu-review-notice__actions .button {
+.steveb27-vu-review-notice__actions .button {
     font-size: 13px;
 }
 
-.svu-review-later {
+.steveb27-vu-review-later {
     color: #787c82;
     font-size: 13px;
     text-decoration: none;
     margin-left: 4px;
 }
 
-.svu-review-later:hover {
+.steveb27-vu-review-later:hover {
     color: #2271b1;
     text-decoration: underline;
 }
@@ -58,7 +58,7 @@
    where wp_get_attachment_image() is called on a video attachment.
 ------------------------------------------------------------------------ */
 
-.sb27-admin-video-thumb {
+.steveb27-admin-video-thumb {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,14 +75,14 @@
     cursor: default;
 }
 
-.sb27-admin-video-thumb svg {
+.steveb27-admin-video-thumb svg {
     width: 100%;
     height: auto;
     max-width: 80px;
     display: block;
 }
 
-.sb27-admin-video-label {
+.steveb27-admin-video-label {
     font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -92,11 +92,11 @@
 }
 
 
-.sb27-video-item {
+.steveb27-video-item {
     border: 2px solid #2271b1;
 }
 
-.sb27-play-icon {
+.steveb27-play-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -108,6 +108,6 @@
     z-index: 10;
 }
 
-.attachment.sb27-video-item .thumbnail:hover .sb27-play-icon {
+.attachment.steveb27-video-item .thumbnail:hover .steveb27-play-icon {
     color: #2271b1;
 }

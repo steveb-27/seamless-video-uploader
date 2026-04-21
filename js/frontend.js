@@ -11,10 +11,10 @@
          * Initialize video players
          */
         function initVideoPlayers() {
-            $('.sb27-video-container').each(function() {
+            $('.steveb27-video-container').each(function() {
                 const container = $(this);
                 const video = container.find('video')[0];
-                const fullscreenBtn = container.find('.sb27-fullscreen-btn');
+                const fullscreenBtn = container.find('.steveb27-fullscreen-btn');
 
                 if (!video) return;
 
@@ -106,7 +106,7 @@
                 document.mozFullScreenElement === container[0] ||
                 document.msFullscreenElement === container[0];
 
-            const btn = container.find('.sb27-fullscreen-btn');
+            const btn = container.find('.steveb27-fullscreen-btn');
 
             if (isFullscreen) {
                 btn.attr('aria-label', 'Exit Fullscreen');
@@ -135,10 +135,10 @@
             // Block photoswipe / WooCommerce lightbox from firing on video gallery items.
             // WooCommerce triggers it via a click on the wrapping anchor inside
             // .woocommerce-product-gallery__image. We intercept that click when the
-            // item also carries data-svu-video="1".
-            $gallery.on('click', '[data-svu-video="1"]', function(e) {
+            // item also carries data-steveb27-video="1".
+            $gallery.on('click', '[data-steveb27-video="1"]', function(e) {
                 // Allow clicks directly on the video element and its controls to pass through.
-                if ($(e.target).closest('video, .sb27-fullscreen-btn').length) {
+                if ($(e.target).closest('video, .steveb27-fullscreen-btn').length) {
                     return;
                 }
                 // Anything else (the wrapper div, an accidental anchor) — block lightbox.
@@ -148,7 +148,7 @@
 
             // Pause all gallery videos whenever the user opens the lightbox for
             // a non-video item (so audio doesn't keep playing behind the overlay).
-            $gallery.on('click', '.woocommerce-product-gallery__image:not([data-svu-video])', function() {
+            $gallery.on('click', '.woocommerce-product-gallery__image:not([data-steveb27-video])', function() {
                 $gallery.find('video').each(function() { this.pause(); });
             });
         }
@@ -156,11 +156,11 @@
         /**
          * Handle video muting toggle
          */
-        $(document).on('click', '.sb27-video-container video', function(e) {
+        $(document).on('click', '.steveb27-video-container video', function(e) {
             const video = this;
 
             // Toggle mute on video click (not fullscreen button)
-            if (!$(e.target).closest('.sb27-fullscreen-btn').length) {
+            if (!$(e.target).closest('.steveb27-fullscreen-btn').length) {
                 video.muted = !video.muted;
 
                 // Show mute indicator
@@ -172,7 +172,7 @@
          * Show mute/unmute indicator
          */
         function showMuteIndicator(container, isMuted) {
-            const indicator = $('<div class="sb27-mute-indicator">' +
+            const indicator = $('<div class="steveb27-mute-indicator">' +
                 (isMuted ? '🔇' : '🔊') + '</div>');
 
             indicator.css({
@@ -204,7 +204,7 @@
 
         // Re-initialize for dynamically added content
         $(document).on('DOMNodeInserted', function(e) {
-            if ($(e.target).find('.sb27-video-container').length || $(e.target).hasClass('sb27-video-container')) {
+            if ($(e.target).find('.steveb27-video-container').length || $(e.target).hasClass('steveb27-video-container')) {
                 setTimeout(initVideoPlayers, 100);
             }
         });

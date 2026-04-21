@@ -45,12 +45,12 @@
                 const poster = attachment.image && attachment.image.src ? attachment.image.src : '';
                 const posterAttr = poster ? `poster="${poster}"` : '';
 
-                return `<div class="sb27-video-container" data-video-id="${id}">
+                return `<div class="steveb27-video-container" data-video-id="${id}">
     <video ${posterAttr} controls muted autoplay loop playsinline controlslist="nodownload">
         <source src="${url}" type="${attachment.mime}">
         Your browser does not support the video tag.
     </video>
-    <button class="sb27-fullscreen-btn" aria-label="Toggle Fullscreen">
+    <button class="steveb27-fullscreen-btn" aria-label="Toggle Fullscreen">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 2h6v2H4v4H2V2zm14 0h-6v2h4v4h2V2zM2 18h6v-2H4v-4H2v6zm16 0h-6v-2h4v-4h2v6z"/>
         </svg>
@@ -66,12 +66,12 @@
                     wp.media.view.Attachment.prototype.render.apply(this, arguments);
 
                     if (this.model.get('type') === 'video') {
-                        this.$el.addClass('sb27-video-item');
+                        this.$el.addClass('steveb27-video-item');
 
                         // Add play icon overlay
-                        if (!this.$el.find('.sb27-play-icon').length) {
+                        if (!this.$el.find('.steveb27-play-icon').length) {
                             this.$el.find('.thumbnail').append(
-                                '<span class="sb27-play-icon">▶</span>'
+                                '<span class="steveb27-play-icon">▶</span>'
                             );
                         }
                     }
@@ -83,10 +83,10 @@
             // Add CSS for video items in media library
             $('<style>')
                 .text(`
-                    .sb27-video-item {
+                    .steveb27-video-item {
                         border: 2px solid #0073aa;
                     }
-                    .sb27-play-icon {
+                    .steveb27-play-icon {
                         position: absolute;
                         top: 50%;
                         left: 50%;
@@ -97,7 +97,7 @@
                         pointer-events: none;
                         z-index: 10;
                     }
-                    .attachment.sb27-video-item .thumbnail:hover .sb27-play-icon {
+                    .attachment.steveb27-video-item .thumbnail:hover .steveb27-play-icon {
                         color: #0073aa;
                     }
                 `)
